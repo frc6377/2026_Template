@@ -39,7 +39,6 @@ import java.util.function.Supplier;
 
 public class DriveCommands {
 
-
     private DriveCommands() {}
 
     private static Translation2d getLinearVelocityFromJoysticks(double x, double y) {
@@ -90,7 +89,11 @@ public class DriveCommands {
 
         // Create PID controller
         ProfiledPIDController angleController = new ProfiledPIDController(
-                DriveConstants.ANGLE_KP, 0.0, DriveConstants.ANGLE_KD, new TrapezoidProfile.Constraints(DriveConstants.ANGLE_MAX_VELOCITY, DriveConstants.ANGLE_MAX_ACCELERATION));
+                DriveConstants.ANGLE_KP,
+                0.0,
+                DriveConstants.ANGLE_KD,
+                new TrapezoidProfile.Constraints(
+                        DriveConstants.ANGLE_MAX_VELOCITY, DriveConstants.ANGLE_MAX_ACCELERATION));
         angleController.enableContinuousInput(-Math.PI, Math.PI);
 
         // Construct command
