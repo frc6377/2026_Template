@@ -1,4 +1,4 @@
-package frc.robot.util.OI;
+package frc.robot.util.OILayer;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -32,4 +32,24 @@ public class OIXbox implements OI {
     public static final DoubleSupplier rightX = () -> controller.getRawAxis(XboxController.Axis.kRightX.value);
     public static final DoubleSupplier rightY = () -> controller.getRawAxis(XboxController.Axis.kRightY.value);
     public static final Trigger start = new JoystickButton(controller, XboxController.Button.kStart.value);
+
+    @Override
+    public DoubleSupplier driveTranslationX() {
+        return leftX;
+    }
+
+    @Override
+    public DoubleSupplier driveTranslationY() {
+        return leftY;
+    }
+
+    @Override
+    public DoubleSupplier driveRotation() {
+        return rightX;
+    }
+
+    @Override
+    public Trigger zeroDrivebase() {
+        return start;
+    }
 }

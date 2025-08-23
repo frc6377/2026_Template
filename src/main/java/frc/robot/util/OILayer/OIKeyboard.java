@@ -1,4 +1,4 @@
-package frc.robot.util.OI;
+package frc.robot.util.OILayer;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -40,4 +40,19 @@ public class OIKeyboard implements OI {
     public static final Trigger Comma = new JoystickButton(controller, 25);
     public static final Trigger Period = new JoystickButton(controller, 26);
     public static final Trigger ForwardSlash = new JoystickButton(controller, 27);
+
+    @Override
+    public DoubleSupplier driveTranslationX() {
+        return LeftX;
+    }
+
+    @Override
+    public DoubleSupplier driveTranslationY() {
+        return LeftY;
+    }
+
+    @Override
+    public DoubleSupplier driveRotation() {
+        return RightX;
+    }
 }

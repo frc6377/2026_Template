@@ -13,7 +13,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -29,6 +28,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.drive.Drive;
+import frc.robot.util.OILayer.OI;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.LinkedList;
@@ -51,11 +51,10 @@ public class DriveCommands {
 
     private static Translation2d getLinearVelocityFromJoysticks(double x, double y) {
         // Apply deadband
-        double linearMagnitude = MathUtil.applyDeadband(Math.hypot(x, y), DEADBAND);
+        double linearMagnitude = Math.hypot(x, y);
         Rotation2d linearDirection = new Rotation2d(Math.atan2(y, x));
 
-        // Square magnitude for more precise control
-        linearMagnitude = linearMagnitude * linearMagnitude;
+        linearMagnitude = OI.driveTranslationCurve.calculate(linearMagnitude);
 
         // Return new linear velocity
         return new Pose2d(new Translation2d(), linearDirection)
@@ -73,10 +72,7 @@ public class DriveCommands {
                             getLinearVelocityFromJoysticks(xSupplier.getAsDouble(), ySupplier.getAsDouble());
 
                     // Apply rotation deadband
-                    double omega = MathUtil.applyDeadband(omegaSupplier.getAsDouble(), DEADBAND);
-
-                    // Square rotation value for more precise control
-                    omega = Math.copySign(omega * omega, omega);
+                    double omega = OI.driveRotationCurve.calculate(omegaSupplier.getAsDouble());
 
                     // Convert to field relative speeds & send command
                     ChassisSpeeds speeds = new ChassisSpeeds(
